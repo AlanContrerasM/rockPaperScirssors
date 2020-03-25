@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Rock Paper Scissors</title>
+  <meta charset="UTF-8"/>
+</head>
+<body>
+    <h1>Let's Play Rock, Paper, Scissors!</h1>
+    <p>Don't Worry, we are not cheating! </p>
+    <p>Maybe...</p>
+
+    <!-- User Choice Selector -->
+    <label for="userChoice">Select your move.</label>
+    <select id="userChoice">
+        <option value="">---Choose Your Weapon---</option>
+        <option value="Rock">Rock</option>
+        <option value="Paper">Paper</option>
+        <option value="Scissors">Scissors</option>
+    </select> 
+    <br>
+    <button id="playButton">Let's Rumble</button>
+    <!-- Here we display wether he won or not @Answer -->
+    <p id="result"></p>
+    <p id="score">User wins <span id="userScore">0</span>
+       vs Computer wins <span id="computerScore">0</span></p>
+
+
+  <script>
+    console.log("Page Loaded!");
+
+    // Getting html elements
+    const userChoice = document.querySelector("#userChoice");
+    const playButton = document.querySelector("#playButton");
+    const result = document.querySelector("#result");
+    const score = document.querySelector("#score");
+    const userScore = document.querySelector("#userScore");
+    const computerScore = document.querySelector("#computerScore");
+
+    let uScore = 0
+    let cScore = 0
+    //Listening for click in order to play the game
+    playButton.addEventListener("click", playGame);
+
+    //Creating playGame function
+    function playGame(){
+        //getting the current value of the select
+        const uChoice = userChoice.value;
+        console.log("User chose: " + uChoice);
+        const computerChoice = computerPlay();
+        //Discovering who won
+        if (uChoice == ""){
+            result.textContent = "Pick a move before playing";
+            console.log("User is dumb, he didn't pick anything");
+          } else if (uChoice == computerChoice) {
+            result.textContent = "We have a tie! You picked: " + uChoice + ". And the computer picked: " + computerChoice;
+            console.log("We have a tie!");
+          } else if ((uChoice =="Rock" && computerChoice =="Scissors")||
+            (uChoice =="Paper" && computerChoice =="Rock")||
+            (uChoice =="Scissors" && computerChoice =="Paper")){
+            console.log("User won. " + uChoice + " vs " + computerChoice);
+            result.textContent = "You won! You picked: " + uChoice + ". And the computer picked: " + computerChoice;
+            //Updating score
+            uScore ++;
+            userScore.textContent = uScore;
+            console.log("User score: " + uScore + "Computer score: " + cScore);
+          } else {
+            console.log("User lost. " + uChoice + " vs " + computerChoice);
+            result.textContent = "You lost! You picked: " + uChoice + ". And the computer picked: " + computerChoice;
+            //Updating score
+            cScore ++;
+            computerScore.textContent = cScore;
+            console.log("User score: " + uScore + " Computer score: " + cScore);
+          }
+    }
+
+    function computerPlay() {
+      console.log("generating computer answer");
+      const computerChoice = Math.floor((Math.random()*3)+1);
+      let cChoice = "";
+      switch(computerChoice) {
+        case 1:
+          cChoice = "Rock"
+          console.log(cChoice);
+          return cChoice;
+        case 2:
+          cChoice = "Paper"
+          console.log(cChoice);
+          return cChoice;
+        case 3:
+          cChoice = "Scissors"
+          console.log(cChoice);
+          return cChoice;
+      }
+    }    
+    
+  </script>
+</body>
+</html>
