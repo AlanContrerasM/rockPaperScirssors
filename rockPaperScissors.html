@@ -8,6 +8,7 @@
     <h1>Let's Play Rock, Paper, Scissors!</h1>
     <p>Don't Worry, we are not cheating! </p>
     <p>Maybe...</p>
+    <p>Best out of 3 wins</p>
 
     <!-- User Choice Selector -->
     <label for="userChoice">Select your move.</label>
@@ -23,7 +24,7 @@
     <p id="result"></p>
     <p id="score">User wins <span id="userScore">0</span>
        vs Computer wins <span id="computerScore">0</span></p>
-
+      <div class="winnerDiv"></div>
 
   <script>
     console.log("Page Loaded!");
@@ -35,14 +36,26 @@
     const score = document.querySelector("#score");
     const userScore = document.querySelector("#userScore");
     const computerScore = document.querySelector("#computerScore");
+    const winnerDiv = document.querySelector(".winnerDiv");
 
+    //scores
     let uScore = 0
     let cScore = 0
+
+    //check wether newgame
+    let newGame = false;
     //Listening for click in order to play the game
     playButton.addEventListener("click", playGame);
 
+    //We could be doing interesting things with the event listener e
+    // btn.addEventListener('click', function (e) {
+    //   console.log(e.target);
+    //   e.target.style.background = 'blue';
+    //   });
+
     //Creating playGame function
     function playGame(){
+
         //getting the current value of the select
         const uChoice = userChoice.value;
         console.log("User chose: " + uChoice);
@@ -54,15 +67,17 @@
           } else if (uChoice == computerChoice) {
             result.textContent = "We have a tie! You picked: " + uChoice + ". And the computer picked: " + computerChoice;
             console.log("We have a tie!");
+            userChoice.selectedIndex = 0;
           } else if ((uChoice =="Rock" && computerChoice =="Scissors")||
-            (uChoice =="Paper" && computerChoice =="Rock")||
-            (uChoice =="Scissors" && computerChoice =="Paper")){
+              (uChoice =="Paper" && computerChoice =="Rock")||
+              (uChoice =="Scissors" && computerChoice =="Paper")){
             console.log("User won. " + uChoice + " vs " + computerChoice);
             result.textContent = "You won! You picked: " + uChoice + ". And the computer picked: " + computerChoice;
             //Updating score
             uScore ++;
             userScore.textContent = uScore;
             console.log("User score: " + uScore + "Computer score: " + cScore);
+            userChoice.selectedIndex = 0;
           } else {
             console.log("User lost. " + uChoice + " vs " + computerChoice);
             result.textContent = "You lost! You picked: " + uChoice + ". And the computer picked: " + computerChoice;
@@ -70,7 +85,11 @@
             cScore ++;
             computerScore.textContent = cScore;
             console.log("User score: " + uScore + " Computer score: " + cScore);
+            userChoice.selectedIndex = 0;
           }
+        
+        // Here we call the function to check if the game has ended and udpate scores.
+        endGame();  
     }
 
     function computerPlay() {
@@ -93,6 +112,34 @@
       }
     }    
     
+    function endGame() {
+      const winnerCall = document.createElement('h1');
+      //we'll put in a class and id just to save how to do it.
+      winnerCall.classList.add('winnerCall');
+      winnerCall.setAttribute('id', 'winnerCall');
+      if(newGame == true) {
+        const winnerH1 = document.querySelector(".winnerCall");
+        //removing winnerCall
+        winnerDiv.removeChild(winnerH1);
+        //update scores
+        computerScore.textContent = cScore;
+        userScore.textContent = uScore;
+        newGame = false;
+      }else if(uScore == 3 || cScore == 3){
+        if(uScore == 3){
+          winnerCall.textContent = 'Congratulations User, you won!';
+          winnerCall.style.cssText = "background-color: green";
+          winnerDiv.appendChild(winnerCall);
+        }  else if(cScore == 3)  {
+          winnerCall.textContent = 'You suck user, you lost!';
+          winnerCall.style.cssText = "background-color: red";
+          winnerDiv.appendChild(winnerCall);
+        } 
+        newGame = true;
+        uScore = 0;
+        cScore = 0;
+      }
+    }
   </script>
 </body>
 </html>
